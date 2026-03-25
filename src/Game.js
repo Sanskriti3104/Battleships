@@ -2,7 +2,7 @@ import Ship from './ship.js';
 import Player from './Player.js';
 import * as DOM from './DOM.js';
 
-function Game() {
+export default function Game() {
     // Create players
     const humanPlayer = new Player('Human');
     const computerPlayer = new Player('Computer');
@@ -65,5 +65,3 @@ function Game() {
     });
 
 }
-
-Game();
