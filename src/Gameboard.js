@@ -1,5 +1,3 @@
-import Ship from "../src/ship.js";
-
 function Gameboard() {
 
     this.board = [
