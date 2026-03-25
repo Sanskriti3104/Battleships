@@ -46,6 +46,13 @@ function Gameboard() {
         }
     }
 
+    this.isAlreadyAttacked = function(x,y) {
+        return (
+            this.missedAttacks.some(coord => coord[0] === x && coord[1] === y) ||
+            this.hitAttacks.some(coord => coord[0] === x && coord[1] === y) 
+        );
+    }
+
     this.allShipsSunk = function() {
         return this.ships.every(ship => ship.isSunk());
     }

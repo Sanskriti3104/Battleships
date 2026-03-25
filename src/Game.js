@@ -32,10 +32,13 @@ export default function Game() {
     DOM.computerBoard.addEventListener('click', (event) => {
         if (activePlayer !== humanPlayer) return; // Only allow human player to click
 
+        if (!event.target.dataset.x) return;
+
         const x = parseInt(event.target.dataset.x);
         const y = parseInt(event.target.dataset.y);
 
         if (isNaN(x) || isNaN(y)) return; // Clicked outside of a cell
+        if (computerPlayer.gameboard.isAlreadyAttacked(x, y)) return;
 
         computerPlayer.gameboard.receiveAttack(x, y);
         DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard);
@@ -50,10 +53,16 @@ export default function Game() {
         // turn switched
         if (activePlayer !== computerPlayer) return; // Only allow computer player to attack
 
-        const cx = Math.floor(Math.random() * humanPlayer.gameboard.board.length);
-        const cy = Math.floor(Math.random() * humanPlayer.gameboard.board[0].length);
+        let cx, cy;
 
-        humanPlayer.gameboard.receiveAttack(cx,cy);
+        do {
+            cx = Math.floor(Math.random() * humanPlayer.gameboard.board.length);
+            cy = Math.floor(Math.random() * humanPlayer.gameboard.board[0].length);
+        } while (
+            humanPlayer.gameboard.isAlreadyAttacked(cx, cy)
+        );
+
+        humanPlayer.gameboard.receiveAttack(cx, cy);
         DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard);
 
         if (humanPlayer.gameboard.allShipsSunk()) {
