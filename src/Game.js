@@ -7,6 +7,9 @@ export default function Game() {
     const humanPlayer = new Player('Human');
     const computerPlayer = new Player('Computer');
 
+    // Flag to track if the game is over
+    let gameOver = false;
+
     // Place ships for both players
     humanPlayer.gameboard.placeShip(new Ship(1), 1, 1);
     humanPlayer.gameboard.placeShip(new Ship(1), 2, 2);
@@ -30,6 +33,8 @@ export default function Game() {
 
     // Start the game loop
     DOM.computerBoard.addEventListener('click', (event) => {
+        if (gameOver) return; // Do nothing if the game is already over
+
         if (activePlayer !== humanPlayer) return; // Only allow human player to click
 
         if (!event.target.dataset.x) return;
@@ -45,6 +50,7 @@ export default function Game() {
 
         if (computerPlayer.gameboard.allShipsSunk()) {
             console.log('Human player wins!');
+            gameOver = true; // Set game over flag
             return;
         }
 
@@ -67,6 +73,7 @@ export default function Game() {
 
         if (humanPlayer.gameboard.allShipsSunk()) {
             console.log('Computer wins');
+            gameOver = true; // Set game over flag
             return;
         }
 
