@@ -9,13 +9,27 @@
 </head>
 
 <body>
+    <h1 class="title">Battleship</h1>
 
-    <div class="container">
+    <div class="game-container">
 
-        <div class="gameboard humanboard"></div>
-        <div class="gameboard computerboard"></div>
+        <div class="board-container">
+            <h2>Your Fleet</h2>
+            <div id="human-board" class="board"></div>
+        </div>
+
+        <div class="board-container">
+            <h2>Enemy Waters</h2>
+            <div id="computer-board" class="board"></div>
+        </div>
 
     </div>
 
+    <div class="controls">
+        <p id="status">Game Started! Attack the enemy board.</p>
+        <button id="restart-btn">Restart Game</button>
+    </div>
+
 </body>
+
 </html>

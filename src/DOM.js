@@ -1,9 +1,12 @@
 // DOM manipulation and rendering logic for the Battleship game
-const container = document.querySelector('.container');
-const humanBoard = document.querySelector('.humanboard');
-const computerBoard = document.querySelector('.computerboard');
+const container = document.querySelector('.game-container');
+const humanBoard = document.getElementById('human-board');
+const computerBoard = document.getElementById('computer-board');
+const boards = document.querySelectorAll('.board');
+const status = document.getElementById('status');
+const resetButton = document.getElementById('reset-button');
 
-function renderBoard(gameboard, boardElement) {
+function renderBoard(gameboard, boardElement, isComputer) {
     boardElement.innerHTML = '';
 
     gameboard.board.forEach((row, rowIndex) => {
@@ -13,8 +16,17 @@ function renderBoard(gameboard, boardElement) {
             cellElement.dataset.x = rowIndex;
             cellElement.dataset.y = cellIndex;
     
-            if (cell !== null) {
+            //show ships on human board only
+            if (cell !== null && !isComputer) {
                 cellElement.classList.add('ship');
+            }
+
+            if(gameboard.missedAttacks.some(coord => coord[0] === rowIndex && coord[1] === cellIndex)) {
+                cellElement.classList.add('miss');
+            }
+
+            if(gameboard.hitAttacks.some(coord => coord[0] === rowIndex && coord[1] === cellIndex)) {
+                cellElement.classList.add('hit');
             }
 
             boardElement.appendChild(cellElement);
@@ -23,4 +35,4 @@ function renderBoard(gameboard, boardElement) {
 
 }
   
-export { container, humanBoard, computerBoard, renderBoard }
+export { container, humanBoard, computerBoard, status, renderBoard }

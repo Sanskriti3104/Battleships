@@ -1,20 +1,19 @@
 function Gameboard() {
 
-    this.board = [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-    ];
-    
+    const boardSize = 10;
+
+    // Create empty 10x10 board
+    this.board = Array.from({ length: boardSize }, () =>
+        Array(boardSize).fill(null)
+    );
+
     this.ships = [];
     this.missedAttacks = [];
     this.hitAttacks = [];
 
     this.placeShip = function (ship, x, y) {
 
-        if (x < 0 || x > this.board.length - 1 || y < 0 || y > this.board[0].length - 1) {
+        if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
             return null; // Out of bounds, do not place the ship
         }
 
@@ -27,33 +26,32 @@ function Gameboard() {
     }
 
     this.receiveAttack = function (x, y) {
-        if (x < 0 || x > this.board.length - 1 || y < 0 || y > this.board[0].length - 1) {
-            return null; 
+        if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
+            return null;
         }
 
-        const alreadyMissed = this.missedAttacks.some(coord => coord[0] === x && coord[1] === y);
-        const alreadyHit = this.hitAttacks.some(coord => coord[0] === x && coord[1] === y);
-
-        if(alreadyHit || alreadyMissed) {
+        if (this.isAlreadyAttacked(x, y)) {
             return "Already attacked";
         }
 
-        if(this.board[x][y] !== null) {
+        if (this.board[x][y] !== null) {
             this.board[x][y].hit();
             this.hitAttacks.push([x, y]);
-        }else {
+            return "Hit";
+        } else {
             this.missedAttacks.push([x, y]);
+            return "Miss";
         }
     }
 
-    this.isAlreadyAttacked = function(x,y) {
+    this.isAlreadyAttacked = function (x, y) {
         return (
             this.missedAttacks.some(coord => coord[0] === x && coord[1] === y) ||
-            this.hitAttacks.some(coord => coord[0] === x && coord[1] === y) 
+            this.hitAttacks.some(coord => coord[0] === x && coord[1] === y)
         );
     }
 
-    this.allShipsSunk = function() {
+    this.allShipsSunk = function () {
         return this.ships.every(ship => ship.isSunk());
     }
 }

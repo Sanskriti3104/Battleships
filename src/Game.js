@@ -18,8 +18,8 @@ export default function Game() {
     computerPlayer.gameboard.placeShip(new Ship(1), 3, 1);
 
     // Render the boards
-    DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard);
-    DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard);
+    DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
+    DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
 
     // Set the active player 
     let activePlayer = humanPlayer;
@@ -46,10 +46,10 @@ export default function Game() {
         if (computerPlayer.gameboard.isAlreadyAttacked(x, y)) return;
 
         computerPlayer.gameboard.receiveAttack(x, y);
-        DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard);
+        DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
 
         if (computerPlayer.gameboard.allShipsSunk()) {
-            console.log('Human player wins!');
+            DOM.status.textContent = 'You win! Click Restart to play again.';
             gameOver = true; // Set game over flag
             return;
         }
@@ -69,10 +69,10 @@ export default function Game() {
         );
 
         humanPlayer.gameboard.receiveAttack(cx, cy);
-        DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard);
+        DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
 
         if (humanPlayer.gameboard.allShipsSunk()) {
-            console.log('Computer wins');
+            DOM.status.textContent = 'Computer wins! Click Restart to play again.';
             gameOver = true; // Set game over flag
             return;
         }
