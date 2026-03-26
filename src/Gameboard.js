@@ -11,17 +11,18 @@ function Gameboard() {
     this.missedAttacks = [];
     this.hitAttacks = [];
 
-    this.placeShip = function (ship, x, y) {
+    this.placeShip = function (ship, x, y, direction) {
 
-        if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
-            return null; // Out of bounds, do not place the ship
+        for (let i = 0; i < ship.length; i++) {
+
+            let r = x;
+            let c = y;
+
+            if (direction === "horizontal") c += i;
+            else r += i;
+
+            this.board[r][c] = ship;
         }
-
-        if (this.board[x][y] !== null) {
-            return "Cell already occupied";
-        }
-
-        this.board[x][y] = ship;
         this.ships.push(ship);
     }
 

@@ -1,4 +1,5 @@
-export default function Ship(length) {
+export default function Ship(name,length) {
+    this.name = name;
     this.length = length;
     let hits = 0;
 

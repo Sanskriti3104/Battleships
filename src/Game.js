@@ -1,8 +1,18 @@
 import Ship from './ship.js';
 import Player from './Player.js';
 import * as DOM from './DOM.js';
+import autoPlaceShip from './ShipPlacement.js';
 
 export default function Game() {
+    // Ships
+    const ships = [
+        new Ship("Carrier", 5),
+        new Ship("Battleship", 4),
+        new Ship("Cruiser", 3),
+        new Ship("Submarine", 3),
+        new Ship("Destroyer", 2)
+    ];
+
     // Create players
     const humanPlayer = new Player('Human');
     const computerPlayer = new Player('Computer');
@@ -10,12 +20,14 @@ export default function Game() {
     // Flag to track if the game is over
     let gameOver = false;
 
-    // Place ships for both players
-    humanPlayer.gameboard.placeShip(new Ship(1), 1, 1);
-    humanPlayer.gameboard.placeShip(new Ship(1), 2, 2);
+    // Place ships randomly for both players
+    ships.forEach(ship => {
+        autoPlaceShip(humanPlayer.gameboard, ship);
+    });
 
-    computerPlayer.gameboard.placeShip(new Ship(1), 0, 0);
-    computerPlayer.gameboard.placeShip(new Ship(1), 3, 1);
+    ships.forEach(ship => {
+        autoPlaceShip(computerPlayer.gameboard, new Ship(ship.name, ship.length));
+    });
 
     // Render the boards
     DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
@@ -23,12 +35,10 @@ export default function Game() {
 
     // Set the active player 
     let activePlayer = humanPlayer;
-    console.log(`Game started! It's ${activePlayer.name}'s turn.`);
 
     // Function to switch active player
     const switchPlayer = () => {
         activePlayer = activePlayer === humanPlayer ? computerPlayer : humanPlayer;
-        console.log(`It's now ${activePlayer.name}'s turn.`);
     }
 
     // Start the game loop
