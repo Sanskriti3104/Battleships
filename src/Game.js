@@ -61,6 +61,7 @@ export default function Game() {
         DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
 
         if (computerPlayer.gameboard.allShipsSunk()) {
+            displayResult(humanPlayer);
             gameOver = true; // Set game over flag
             return;
         }
@@ -84,6 +85,7 @@ export default function Game() {
 
         if (humanPlayer.gameboard.allShipsSunk()) {
             gameOver = true; // Set game over flag
+            displayResult(computerPlayer);
             return;
         }
 
@@ -106,4 +108,14 @@ export default function Game() {
         DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
         DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
     });
+
+    // Function to display (popup)
+    function displayResult(player) {
+        DOM.popupWindow.classList.add('active');
+        DOM.result.textContent = (player === humanPlayer) ? "You Win!" : "Computer Wins!";
+        setTimeout(() => {
+            DOM.popupWindow.classList.remove('active');
+            DOM.resetButton.click();   // restart game automatically
+        }, 3000);
+    }
 }

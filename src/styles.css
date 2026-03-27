@@ -39,7 +39,7 @@ body {
 .title p {
     font-family: 'Capriola';
     font-size: 15px;
-     max-width: 500px;
+    max-width: 500px;
     text-align: center;
 }
 
@@ -135,4 +135,42 @@ button {
 
 button:hover {
     background: #1e293b;
+}
+
+/* POPUP - WINDOW */
+.popup-window {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: 100%;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 9999;
+    visibility: hidden;
+
+    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.popup-window.active {
+    visibility: visible;
+}
+
+.result-popup {
+    background: white;
+    padding: 30px 60px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.result {
+    font-family: 'Capriola';
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
 }
