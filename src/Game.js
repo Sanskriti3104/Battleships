@@ -111,10 +111,10 @@ export default function Game() {
 
     // Function to display (popup)
     function displayResult(player) {
-        DOM.popupWindow.classList.add('active');
+        DOM.resultPopupWindow.classList.add('active');
         DOM.result.textContent = (player === humanPlayer) ? "You Win!" : "Computer Wins!";
         setTimeout(() => {
-            DOM.popupWindow.classList.remove('active');
+            DOM.resultPopupWindow.classList.remove('active');
             DOM.resetButton.click();   // restart game automatically
         }, 3000);
     }

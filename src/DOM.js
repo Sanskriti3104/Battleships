@@ -3,8 +3,10 @@ const container = document.querySelector('.game-container');
 const humanBoard = document.getElementById('human-board');
 const computerBoard = document.getElementById('computer-board');
 const resetButton = document.getElementById('restart-btn');
-const popupWindow = document.querySelector('.popup-window');
+const resultPopupWindow = document.getElementById('resultPopupWindow');
 const result = document.querySelector('.result');
+const descriptionPopupWindow = document.getElementById('descriptionPopupWindow');
+const description = document.querySelector('.description');
 
 function renderBoard(gameboard, boardElement, isComputer) {
     boardElement.innerHTML = '';
@@ -15,17 +17,17 @@ function renderBoard(gameboard, boardElement, isComputer) {
             cellElement.classList.add('cell');
             cellElement.dataset.x = rowIndex;
             cellElement.dataset.y = cellIndex;
-    
+
             //show ships on human board only
             if (cell !== null && !isComputer) {
                 cellElement.classList.add('ship');
             }
 
-            if(gameboard.missedAttacks.some(coord => coord[0] === rowIndex && coord[1] === cellIndex)) {
+            if (gameboard.missedAttacks.some(coord => coord[0] === rowIndex && coord[1] === cellIndex)) {
                 cellElement.classList.add('miss');
             }
 
-            if(gameboard.hitAttacks.some(coord => coord[0] === rowIndex && coord[1] === cellIndex)) {
+            if (gameboard.hitAttacks.some(coord => coord[0] === rowIndex && coord[1] === cellIndex)) {
                 cellElement.classList.add('hit');
             }
 
@@ -35,4 +37,12 @@ function renderBoard(gameboard, boardElement, isComputer) {
 
 }
 
-export { container, humanBoard, computerBoard, resetButton, popupWindow, result, renderBoard }
+function displayDescription() {
+    descriptionPopupWindow.classList.add('active');
+
+    descriptionPopupWindow.addEventListener('click', () => {
+        descriptionPopupWindow.classList.remove('active');
+    }, { once: true });
+}
+
+export { container, humanBoard, computerBoard, resetButton, resultPopupWindow, descriptionPopupWindow, result, displayDescription, renderBoard }

@@ -161,6 +161,53 @@ button:hover {
     visibility: visible;
 }
 
+/* DESCRIPTION - POPUP */
+.description-popup{
+    background: white;
+    width: 520px;
+    max-height: 80vh;
+    overflow-y: auto;
+
+    padding: 35px 40px;
+
+    border-radius: 12px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+}
+
+.description{
+    font-family: 'Capriola';
+    font-size: 15px;
+    color: #334155;
+}
+
+.description strong {
+    display: block;
+    font-size: 18px;
+    color: #0f172a;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+.description p {
+    margin-bottom: 12px;
+}
+
+.description ul {
+    margin-left: 20px;
+}
+
+.description li {
+    margin-bottom: 6px;
+}
+
+.description em {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: #64748b;
+}
+
+/* RESULT - POPUP  */
 .result-popup {
     background: white;
     padding: 30px 60px;

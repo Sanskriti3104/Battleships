@@ -8,6 +8,38 @@
 </head>
 
 <body>
+    <div class="popup-window" id="descriptionPopupWindow">
+        <div class="description-popup">
+            <div class="description">
+                <strong>Welcome to Battleship!</strong>
+                <p>
+                    Strategically locate and sink your opponent's fleet before they destroy yours.
+                    Both players command a fleet placed on a 10×10 grid. Your objective is to
+                    find the location of the enemy ships and sink them before your fleet is destroyed.
+                </p>
+                <strong>Fleet Composition</strong>
+                <ul>
+                    <li>Carrier — 5 cells</li>
+                    <li>Battleship — 4 cells</li>
+                    <li>Cruiser — 3 cells</li>
+                    <li>Submarine — 3 cells</li>
+                    <li>Destroyer — 2 cells</li>
+                </ul>
+                <strong>Rules of the Game</strong>
+                <ul>
+                    <li>The game is played on a 10×10 grid.</li>
+                    <li>Ships are placed randomly at the start of the game.</li>
+                    <li>Ships cannot overlap or extend outside the board.</li>
+                    <li>Click on a cell in the enemy board to attack.</li>
+                    <li>A <b>red cell</b> indicates a hit and a <b>grey cell</b> indicates a miss.</li>
+                    <li>Players take turns attacking one cell at a time.</li>
+                    <li>The first player to sink all enemy ships wins the battle.</li>
+                </ul>
+                <p><em>Good luck, Captain!</em></p>
+            </div>
+        </div>
+    </div>
+
     <div class="title">
         <h1>Battleship</h1>
         <p>Strategically locate and sink your opponent's fleet before they destroy yours.</p>
@@ -31,7 +63,7 @@
         <button id="restart-btn">Restart Game</button>
     </div>
 
-    <div class="popup-window">
+    <div class="popup-window" id="resultPopupWindow">
         <div class="result-popup">
             <p class="result"></p>
         </div>
