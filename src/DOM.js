@@ -3,8 +3,7 @@ const container = document.querySelector('.game-container');
 const humanBoard = document.getElementById('human-board');
 const computerBoard = document.getElementById('computer-board');
 const boards = document.querySelectorAll('.board');
-const status = document.getElementById('status');
-const resetButton = document.getElementById('reset-button');
+const resetButton = document.getElementById('reset-btn');
 
 function renderBoard(gameboard, boardElement, isComputer) {
     boardElement.innerHTML = '';
@@ -35,4 +34,4 @@ function renderBoard(gameboard, boardElement, isComputer) {
 
 }
   
-export { container, humanBoard, computerBoard, status, renderBoard }
+export { container, humanBoard, computerBoard, renderBoard }

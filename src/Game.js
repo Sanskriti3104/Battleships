@@ -59,7 +59,6 @@ export default function Game() {
         DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
 
         if (computerPlayer.gameboard.allShipsSunk()) {
-            DOM.status.textContent = 'You win! Click Restart to play again.';
             gameOver = true; // Set game over flag
             return;
         }
@@ -82,7 +81,6 @@ export default function Game() {
         DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
 
         if (humanPlayer.gameboard.allShipsSunk()) {
-            DOM.status.textContent = 'Computer wins! Click Restart to play again.';
             gameOver = true; // Set game over flag
             return;
         }
