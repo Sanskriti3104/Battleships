@@ -6,11 +6,11 @@ import autoPlaceShip from './ShipPlacement.js';
 export default function Game() {
     // Ships
     const ships = [
-        new Ship("Carrier", 5),
-        new Ship("Battleship", 4),
-        new Ship("Cruiser", 3),
-        new Ship("Submarine", 3),
-        new Ship("Destroyer", 2)
+        { name: "Carrier", length: 5 },
+        { name: "Battleship", length: 4 },
+        { name: "Cruiser", length: 3 },
+        { name: "Submarine", length: 3 },
+        { name: "Destroyer", length: 2 }
     ];
 
     // Create players
@@ -21,13 +21,15 @@ export default function Game() {
     let gameOver = false;
 
     // Place ships randomly for both players
-    ships.forEach(ship => {
-        autoPlaceShip(humanPlayer.gameboard, ship);
-    });
+    function placeShipsRandomly(player) {
+        ships.forEach(ship => {
+            autoPlaceShip(player.gameboard, new Ship(ship.name, ship.length));
+        });
+    }
 
-    ships.forEach(ship => {
-        autoPlaceShip(computerPlayer.gameboard, new Ship(ship.name, ship.length));
-    });
+    //Initial placement
+    placeShipsRandomly(humanPlayer);
+    placeShipsRandomly(computerPlayer);
 
     // Render the boards
     DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
@@ -88,4 +90,20 @@ export default function Game() {
         switchPlayer();
     });
 
+    DOM.resetButton.addEventListener('click', () => {
+        // Reset game state
+        humanPlayer.gameboard.reset();
+        computerPlayer.gameboard.reset();
+
+        gameOver = false;
+        activePlayer = humanPlayer;
+
+        // Place ships randomly again
+        placeShipsRandomly(humanPlayer);
+        placeShipsRandomly(computerPlayer);
+
+        // Re-render the boards
+        DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
+        DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
+    });
 }

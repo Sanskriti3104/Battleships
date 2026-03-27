@@ -3,10 +3,12 @@ function Gameboard() {
     const boardSize = 10;
 
     // Create empty 10x10 board
-    this.board = Array.from({ length: boardSize }, () =>
+    const createBoard = () => {
+        return Array.from({ length: boardSize }, () =>
         Array(boardSize).fill(null)
     );
-
+    }
+    this.board = createBoard();
     this.ships = [];
     this.missedAttacks = [];
     this.hitAttacks = [];
@@ -54,6 +56,14 @@ function Gameboard() {
 
     this.allShipsSunk = function () {
         return this.ships.every(ship => ship.isSunk());
+    }
+
+    this.reset = function () {
+        this.board = createBoard();
+
+        this.ships = [];
+        this.missedAttacks = [];
+        this.hitAttacks = [];
     }
 }
 
