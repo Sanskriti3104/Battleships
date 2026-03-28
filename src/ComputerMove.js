@@ -19,14 +19,47 @@ export default function ComputerMove(computerPlayer, humanPlayer) {
         }
     }
 
+    // Functions to add neighbours 
+    function pushVerticalFirst(x, y) {
+        validpush(x - 1, y); //up
+        validpush(x + 1, y); //down
+
+    }
+
+    function pushHorizontalFirst(x, y) {
+        validpush(x, y - 1); //left
+        validpush(x, y + 1); //right
+    }
+
     // If there was a hit, add neighbours which are not attacked 
     if (!isEmpty(hitAttacks)) {
-
         const [x, y] = hitAttacks[hitAttacks.length - 1];
-        validpush(x - 1, y);
-        validpush(x + 1, y);
-        validpush(x, y - 1);
-        validpush(x, y + 1);
+
+        if (hitAttacks.length > 1) {
+            const [px, py] = hitAttacks[hitAttacks.length - 2];
+
+            // Check if hits are adjacent
+            if (Math.abs(px - x) + Math.abs(py - y) === 1) {
+
+                //Vertical Direction
+                if (py === y) {
+                    pushVerticalFirst(x, y);
+                    pushHorizontalFirst(x, y);
+                }
+
+                // Horizontal direction
+                if (px === x) {
+                    pushHorizontalFirst(x, y);
+                    pushVerticalFirst(x, y);
+                }
+            } else {
+                pushVerticalFirst(x, y);
+                pushHorizontalFirst(x, y);
+            }
+        } else {
+            pushVerticalFirst(x, y);
+            pushHorizontalFirst(x, y);
+        }
 
     }
 
