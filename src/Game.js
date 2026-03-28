@@ -1,6 +1,7 @@
 import Ship from './ship.js';
 import Player from './Player.js';
 import * as DOM from './DOM.js';
+import ComputerMove from './ComputerMove.js';
 import autoPlaceShip from './ShipPlacement.js';
 
 export default function Game() {
@@ -73,13 +74,14 @@ export default function Game() {
 
         let cx, cy;
 
-        do {
-            cx = Math.floor(Math.random() * humanPlayer.gameboard.board.length);
-            cy = Math.floor(Math.random() * humanPlayer.gameboard.board[0].length);
-        } while (
-            humanPlayer.gameboard.isAlreadyAttacked(cx, cy)
-        );
+        // do {
+        //     cx = Math.floor(Math.random() * humanPlayer.gameboard.board.length);
+        //     cy = Math.floor(Math.random() * humanPlayer.gameboard.board[0].length);
+        // } while (
+        //     humanPlayer.gameboard.isAlreadyAttacked(cx, cy)
+        // );
 
+        [cx,cy] = ComputerMove(computerPlayer,humanPlayer);
         humanPlayer.gameboard.receiveAttack(cx, cy);
         DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
 
