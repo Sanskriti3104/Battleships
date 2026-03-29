@@ -1,6 +1,58 @@
 @import url('https://fonts.googleapis.com/css?family=Caesar+Dressing');
 @import url('https://fonts.googleapis.com/css?family=Capriola');
 
+/* THEME VARIABLES */
+
+:root {
+
+    --bg-color: #f8fafc;
+    --text-color: #0f172a;
+
+    --card-bg: white;
+    --cell-bg: #e2e8f0;
+    --cell-hover: #cbd5f5;
+
+    --ship-color: #0f172a;
+    --hit-color: #ef4444;
+    --miss-color: #94a3b8;
+
+    --button-bg: #0f172a;
+    --button-text: white;
+    --button-hover: #1e293b;
+
+    --popup-bg: white;
+
+    --desc-text: #334155;
+    --desc-strong: #0f172a;
+    --desc-em: #64748b;
+}
+
+/* DARK THEME */
+
+[data-theme="dark"] {
+
+    --bg-color: #0f172a;
+    --text-color: #f1f5f9;
+
+    --card-bg: #1e293b;
+    --cell-bg: #334155;
+    --cell-hover: #475569;
+
+    --ship-color: #f8fafc;
+    --hit-color: #ef4444;
+    --miss-color: #64748b;
+
+    --button-bg: #f1f5f9;
+    --button-text: #0f172a;
+    --button-hover: #e2e8f0;
+
+    --popup-bg: #1e293b;
+
+    --desc-text: #cbd5f5;
+    --desc-strong: #f1f5f9;
+    --desc-em: #94a3b8;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,8 +60,8 @@
 }
 
 body {
-    background: #f8fafc;
-    color: #0f172a;
+    background: var(--bg-color);
+    color: var(--text-color);
     font-family: 'Arial', sans-serif;
 
     min-height: 100vh;
@@ -19,6 +71,37 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* NAV BAR (TOP RIGHT) */
+
+.nav-bar {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+
+    display: flex;
+    gap: 18px;
+
+    font-size: 22px;
+    cursor: pointer;
+
+    z-index: 1000;
+}
+
+.nav-bar i {
+    transition: transform 0.15s ease;
+}
+
+.nav-bar i:hover {
+    transform: scale(1.15);
+}
+
+.toggle{
+    display: flex;
+    flex-direction: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 /* TITLE */
@@ -55,7 +138,7 @@ body {
 /* BOARD CARD */
 
 .board-container {
-    background: white;
+    background: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -67,7 +150,7 @@ body {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 14px;
-    color: #64748b;
+    color: var(--desc-em);
 }
 
 /* BOARD GRID */
@@ -85,33 +168,33 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 6px;
-    background: #e2e8f0;
+    background: var(--cell-bg);
     transition: all 0.15s ease;
 }
 
 /* HOVER (enemy board only) */
 
 #computer-board .cell:hover {
-    background: #cbd5f5;
+    background: var(--cell-hover);
     cursor: pointer;
 }
 
 /* SHIP */
 
 .ship {
-    background: #0f172a;
+    background: var(--ship-color);
 }
 
 /* HIT */
 
 .hit {
-    background: #ef4444;
+    background: var(--hit-color);
 }
 
 /* MISS */
 
 .miss {
-    background: #94a3b8;
+    background: var(--miss-color);
 }
 
 /* STATUS */
@@ -123,8 +206,8 @@ body {
 /* BUTTON */
 
 button {
-    background: #0f172a;
-    color: white;
+    background: var(--button-bg);
+    color: var(--button-text);
     border: none;
     padding: 10px 22px;
     font-size: 14px;
@@ -134,10 +217,11 @@ button {
 }
 
 button:hover {
-    background: #1e293b;
+    background: var(--button-hover);
 }
 
 /* POPUP - WINDOW */
+
 .popup-window {
     display: flex;
     align-items: center;
@@ -162,8 +246,9 @@ button:hover {
 }
 
 /* DESCRIPTION - POPUP */
+
 .description-popup{
-    background: white;
+    background: var(--popup-bg);
     width: 520px;
     max-height: 80vh;
     overflow-y: auto;
@@ -177,13 +262,13 @@ button:hover {
 .description{
     font-family: 'Capriola';
     font-size: 15px;
-    color: #334155;
+    color: var(--desc-text);
 }
 
 .description strong {
     display: block;
     font-size: 18px;
-    color: #0f172a;
+    color: var(--desc-strong);
     margin-top: 15px;
     margin-bottom: 8px;
 }
@@ -204,12 +289,13 @@ button:hover {
     display: block;
     margin-top: 15px;
     text-align: center;
-    color: #64748b;
+    color: var(--desc-em);
 }
 
-/* RESULT - POPUP  */
+/* RESULT - POPUP */
+
 .result-popup {
-    background: white;
+    background: var(--popup-bg);
     padding: 30px 60px;
     border-radius: 10px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);

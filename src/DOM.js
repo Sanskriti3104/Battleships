@@ -6,7 +6,6 @@ const resetButton = document.getElementById('restart-btn');
 const resultPopupWindow = document.getElementById('resultPopupWindow');
 const result = document.querySelector('.result');
 const descriptionPopupWindow = document.getElementById('descriptionPopupWindow');
-const description = document.querySelector('.description');
 
 function renderBoard(gameboard, boardElement, isComputer) {
     boardElement.innerHTML = '';
