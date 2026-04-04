@@ -6,6 +6,8 @@ const resetButton = document.getElementById('restart-btn');
 const resultPopupWindow = document.getElementById('resultPopupWindow');
 const result = document.querySelector('.result');
 const descriptionPopupWindow = document.getElementById('descriptionPopupWindow');
+const descriptionToggle = document.querySelector('.description-toggle');
+const closeDescription = document.querySelector('.close-description');
 
 function renderBoard(gameboard, boardElement, isComputer) {
     boardElement.innerHTML = '';
@@ -36,12 +38,13 @@ function renderBoard(gameboard, boardElement, isComputer) {
 
 }
 
+descriptionToggle.addEventListener('click', displayDescription);
+closeDescription.addEventListener('click', () => {
+    descriptionPopupWindow.classList.remove('active');
+});
+
 function displayDescription() {
     descriptionPopupWindow.classList.add('active');
-
-    descriptionPopupWindow.addEventListener('click', () => {
-        descriptionPopupWindow.classList.remove('active');
-    }, { once: true });
 }
 
 export { container, humanBoard, computerBoard, resetButton, resultPopupWindow, descriptionPopupWindow, result, displayDescription, renderBoard }

@@ -97,7 +97,7 @@ body {
     transform: scale(1.15);
 }
 
-.toggle{
+.toggle {
     display: flex;
     flex-direction: flex;
     align-items: center;
@@ -247,7 +247,7 @@ button:hover {
 
 /* DESCRIPTION - POPUP */
 
-.description-popup{
+.description-popup {
     background: var(--popup-bg);
     width: 520px;
     max-height: 80vh;
@@ -256,10 +256,25 @@ button:hover {
     padding: 35px 40px;
 
     border-radius: 12px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    position: relative;
+
 }
 
-.description{
+.close-description {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.close-description:hover {
+    transform: scale(1.15);
+}
+
+.description {
     font-family: 'Capriola';
     font-size: 15px;
     color: var(--desc-text);
