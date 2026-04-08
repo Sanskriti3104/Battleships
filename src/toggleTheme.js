@@ -1,5 +1,13 @@
 export default function toggleTheme() {
 
+    const navBar = document.querySelector(".nav-bar");
+
+    // Add theme toggle icon
+    navBar.insertAdjacentHTML(
+        "beforeend",
+        `<i class="fa-solid fa-moon theme-toggle" title="Toggle Dark Mode"></i>`
+    );
+
     const themeToggle = document.querySelector(".theme-toggle");
 
     // Apply saved theme
@@ -18,7 +26,8 @@ export default function toggleTheme() {
             document.documentElement.removeAttribute("data-theme");
             themeToggle.classList.replace("fa-sun", "fa-moon");
             localStorage.setItem("theme", "light");
-        } else {
+        } 
+        else {
             document.documentElement.setAttribute("data-theme", "dark");
             themeToggle.classList.replace("fa-moon", "fa-sun");
             localStorage.setItem("theme", "dark");
