@@ -28,6 +28,43 @@
 
     </div>
 
+    <div class="setup-container">
+
+        <div class="placement-area">
+
+            <div class="ships-panel">
+                <h2>Drag Your Ships</h2>
+
+                <div class="ship" draggable="true" data-length="5">Carrier (5)</div>
+                <div class="ship" draggable="true" data-length="4">Battleship (4)</div>
+                <div class="ship" draggable="true" data-length="3">Cruiser (3)</div>
+                <div class="ship" draggable="true" data-length="3">Submarine (3)</div>
+                <div class="ship" draggable="true" data-length="2">Destroyer (2)</div>
+
+                <div class="setup-controls">
+
+                    <label for="ship-direction">Direction:</label>
+
+                    <select id="ship-direction">
+                        <option value="horizontal" selected>Horizontal</option>
+                        <option value="vertical">Vertical</option>
+                    </select>
+
+                    <button id="start-game-btn">Start Game</button>
+
+                </div>
+
+            </div>
+
+            <div class="board-container">
+                <h2>Your Fleet</h2>
+                <div id="placement-board" class="board"></div>
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="game-container">
 
         <div class="board-container">

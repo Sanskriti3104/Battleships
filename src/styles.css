@@ -192,6 +192,112 @@ body {
     text-align: center;
 }
 
+/* SETUP SCREEN */
+
+.setup-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* MAIN LAYOUT */
+
+.placement-area {
+    display: flex;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+/* SHIPS PANEL CARD */
+
+.ships-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+    min-width: 220px;
+}
+
+/* DRAG YOUR SHIPS TITLE */
+
+.ships-panel h2 {
+    font-family: 'Caesar Dressing';
+    font-size: 26px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+/* SHIP ITEMS */
+
+.ships-panel .ship {
+    padding: 10px 14px;
+    background: var(--cell-bg);
+    border-radius: 6px;
+    cursor: grab;
+    font-family: 'Capriola';
+
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.ships-panel .ship:hover {
+    transform: translateX(4px);
+    background: var(--cell-hover);
+}
+
+/* CONTROLS AREA */
+
+.setup-controls {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ORIENTATION ROW */
+
+.setup-controls label,
+.setup-controls select {
+    font-family: 'Capriola';
+    font-size: 14px;
+}
+
+/* ORIENTATION LINE */
+
+.setup-controls label {
+    margin-right: 6px;
+}
+
+/* ORIENTATION + SELECT INLINE */
+
+.setup-controls label,
+.setup-controls select {
+    display: inline-block;
+}
+
+/* DROPDOWN */
+
+.setup-controls select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--cell-bg);
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* START GAME BUTTON */
+
+#start-game-btn {
+    width: 100%;
+    margin-top: 5px;
+}
+
 /* GAME LAYOUT */
 
 .game-container {

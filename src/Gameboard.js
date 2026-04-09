@@ -5,9 +5,10 @@ function Gameboard() {
     // Create empty 10x10 board
     const createBoard = () => {
         return Array.from({ length: boardSize }, () =>
-        Array(boardSize).fill(null)
-    );
+            Array(boardSize).fill(null)
+        );
     }
+    
     this.board = createBoard();
     this.ships = [];
     this.missedAttacks = [];

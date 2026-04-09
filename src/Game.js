@@ -4,7 +4,7 @@ import * as DOM from './DOM.js';
 import ComputerMove from './ComputerMove.js';
 import autoPlaceShip from './ShipPlacement.js';
 
-export default function Game() {
+export default function Game(humanBoard) {
     // Ships
     const ships = [
         { name: "Carrier", length: 5 },
@@ -16,6 +16,13 @@ export default function Game() {
 
     // Create players
     const humanPlayer = new Player('Human');
+
+    if (humanBoard) {
+        humanPlayer.gameboard = humanBoard;
+    } else {
+        placeShipsRandomly(humanPlayer);
+    }
+    
     const computerPlayer = new Player('Computer');
 
     // Flag to track if the game is over
@@ -29,7 +36,6 @@ export default function Game() {
     }
 
     //Initial placement
-    placeShipsRandomly(humanPlayer);
     placeShipsRandomly(computerPlayer);
 
     // Render the boards
@@ -74,14 +80,7 @@ export default function Game() {
 
         let cx, cy;
 
-        // do {
-        //     cx = Math.floor(Math.random() * humanPlayer.gameboard.board.length);
-        //     cy = Math.floor(Math.random() * humanPlayer.gameboard.board[0].length);
-        // } while (
-        //     humanPlayer.gameboard.isAlreadyAttacked(cx, cy)
-        // );
-
-        [cx,cy] = ComputerMove(computerPlayer,humanPlayer);
+        [cx, cy] = ComputerMove(computerPlayer, humanPlayer);
         humanPlayer.gameboard.receiveAttack(cx, cy);
         DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
 

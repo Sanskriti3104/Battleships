@@ -1,10 +1,11 @@
-import Game from './Game.js';
+import setupShips from './setUpShips.js';
 
 function homePage() {
 
     const homeContainer = document.querySelector('.home-container');
     const form = document.getElementById('player-form');
     const playerInput = document.getElementById('player-name');
+    const setupContainer = document.querySelector('.setup-container');
     const gameContainer = document.querySelector('.game-container');
     const controls = document.querySelector('.controls');
 
@@ -17,9 +18,9 @@ function homePage() {
         const playerName = playerInput.value.trim();
         if (!playerName) return;
         homeContainer.style.display = 'none';
-        gameContainer.style.display = 'flex';
-        controls.style.display = 'flex';
-        Game();
+        setupContainer.style.display = 'flex';
+
+        setupShips(playerName);
     });
 
 }
