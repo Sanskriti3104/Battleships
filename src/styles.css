@@ -25,6 +25,10 @@
     --desc-text: #334155;
     --desc-strong: #0f172a;
     --desc-em: #64748b;
+
+    --wave1: #38bdf8;
+    --wave2: #0ea5e9;
+    --wave3: #0284c7;
 }
 
 /* DARK THEME */
@@ -51,6 +55,10 @@
     --desc-text: #cbd5f5;
     --desc-strong: #f1f5f9;
     --desc-em: #94a3b8;
+
+    --wave1: #38bdf8;
+    --wave2: #0ea5e9;
+    --wave3: #0369a1;
 }
 
 * {
@@ -493,4 +501,61 @@ button:hover {
     text-align: center;
     padding: 20px;
     font-size: 20px;
+}
+
+/* OCEAN WAVE BACKGROUND */
+/* ocean container */
+.ocean-bg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* waves */
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 200px;
+    bottom: 0;
+}
+
+/* front wave */
+.wave1 {
+    opacity: 0.7;
+    animation: waveMove 6s linear infinite;
+}
+
+/* middle wave */
+.wave2 {
+    opacity: 0.45;
+    bottom: 10px;
+    animation: waveMove 10s linear infinite;
+}
+
+
+/* back wave */
+.wave3 {
+    opacity: 0.25;
+    bottom: 20px;
+    animation: waveMove 14s linear infinite;
+}
+
+
+/* wave animation */
+
+@keyframes waveMove {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+
 }
