@@ -10,11 +10,16 @@ export default function setupShips(playerName) {
     const boardElement = document.getElementById("placement-board");
     const ships = document.querySelectorAll(".ship");
     const startButton = document.getElementById("start-game-btn");
+    startButton.disabled = true;
+
     const directionSelect = document.getElementById("ship-direction");
 
     const board = new Gameboard();
 
     let direction = directionSelect.value;
+
+    let placedShipsCount = 0;
+    const totalShips = ships.length;
 
     directionSelect.addEventListener("change", () => {
         direction = directionSelect.value;
@@ -24,7 +29,6 @@ export default function setupShips(playerName) {
 
     // CREATE BOARD
     for (let x = 0; x < boardSize; x++) {
-
         for (let y = 0; y < boardSize; y++) {
 
             const cell = document.createElement("div");
@@ -47,8 +51,7 @@ export default function setupShips(playerName) {
                 const row = parseInt(cell.dataset.x);
                 const col = parseInt(cell.dataset.y);
 
-                // VALIDATION CHECKS
-
+                // VALIDATION
                 if (!isValidPlacement(row, col, length, direction)) {
                     alert("Invalid placement");
                     return;
@@ -58,6 +61,7 @@ export default function setupShips(playerName) {
 
                     board.placeShip(ship, row, col, direction);
 
+                    // DRAW SHIP ON BOARD
                     for (let i = 0; i < length; i++) {
 
                         let r = row;
@@ -68,35 +72,40 @@ export default function setupShips(playerName) {
 
                         const index = r * boardSize + c;
                         boardElement.children[index].classList.add("ship");
-
                     }
 
-                    // REMOVE SHIP FROM PANEL AFTER PLACEMENT
-                    const draggedShip = document.querySelector(`[data-length="${length}"]`);
-                    if (draggedShip) draggedShip.remove();
+                    // REMOVE SHIP FROM PANEL (prevent reuse)
+                    const draggedShip = document.querySelector(
+                        `[data-length="${length}"]:not([data-placed="true"])`
+                    );
+
+                    if (draggedShip) {
+                        draggedShip.draggable = false;
+                        draggedShip.dataset.placed = "true";
+                        draggedShip.style.opacity = "0.5";
+                    }
+
+                    placedShipsCount++;
+
+                    if (placedShipsCount === totalShips) {
+                        startButton.disabled = false;
+                    }
 
                 } catch (err) {
-
                     alert("Invalid placement");
-
                 }
 
             });
 
         }
-
     }
 
     // DRAG START
     ships.forEach(ship => {
-
         ship.addEventListener("dragstart", (e) => {
-
             e.dataTransfer.setData("length", ship.dataset.length);
             e.dataTransfer.setData("name", ship.textContent);
-
         });
-
     });
 
     // VALIDATION FUNCTION
@@ -121,11 +130,9 @@ export default function setupShips(playerName) {
             if (board.board[r][c] !== null) {
                 return false;
             }
-
         }
 
         return true;
-
     }
 
     // START GAME
@@ -140,7 +147,6 @@ export default function setupShips(playerName) {
         controls.style.display = "flex";
 
         Game(board);
-
     });
 
 }
