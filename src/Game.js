@@ -3,6 +3,7 @@ import Player from './Player.js';
 import * as DOM from './DOM.js';
 import ComputerMove from './ComputerMove.js';
 import autoPlaceShip from './ShipPlacement.js';
+import setupShips from './setUpShips.js';
 
 export default function Game(humanBoard) {
     // Ships
@@ -28,40 +29,36 @@ export default function Game(humanBoard) {
     // Flag to track if the game is over
     let gameOver = false;
 
-    // Place ships randomly for both players
+    // Place ships randomly for computer
     function placeShipsRandomly(player) {
         ships.forEach(ship => {
             autoPlaceShip(player.gameboard, new Ship(ship.name, ship.length));
         });
     }
 
-    //Initial placement
     placeShipsRandomly(computerPlayer);
 
     // Render the boards
     DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
     DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
 
-    // Set the active player 
+    // Set the active player
     let activePlayer = humanPlayer;
 
-    // Function to switch active player
     const switchPlayer = () => {
         activePlayer = activePlayer === humanPlayer ? computerPlayer : humanPlayer;
-    }
+    };
 
-    // Start the game loop
+    // Game loop
     DOM.computerBoard.addEventListener('click', (event) => {
-        if (gameOver) return; // Do nothing if the game is already over
-
-        if (activePlayer !== humanPlayer) return; // Only allow human player to click
-
+        if (gameOver) return;
+        if (activePlayer !== humanPlayer) return;
         if (!event.target.dataset.x) return;
 
         const x = parseInt(event.target.dataset.x);
         const y = parseInt(event.target.dataset.y);
 
-        if (isNaN(x) || isNaN(y)) return; // Clicked outside of a cell
+        if (isNaN(x) || isNaN(y)) return;
         if (computerPlayer.gameboard.isAlreadyAttacked(x, y)) return;
 
         computerPlayer.gameboard.receiveAttack(x, y);
@@ -69,23 +66,20 @@ export default function Game(humanBoard) {
 
         if (computerPlayer.gameboard.allShipsSunk()) {
             displayResult(humanPlayer);
-            gameOver = true; // Set game over flag
+            gameOver = true;
             return;
         }
 
         switchPlayer();
 
-        // turn switched
-        if (activePlayer !== computerPlayer) return; // Only allow computer player to attack
+        if (activePlayer !== computerPlayer) return;
 
-        let cx, cy;
-
-        [cx, cy] = ComputerMove(computerPlayer, humanPlayer);
+        const [cx, cy] = ComputerMove(computerPlayer, humanPlayer);
         humanPlayer.gameboard.receiveAttack(cx, cy);
         DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
 
         if (humanPlayer.gameboard.allShipsSunk()) {
-            gameOver = true; // Set game over flag
+            gameOver = true;
             displayResult(computerPlayer);
             return;
         }
@@ -93,30 +87,64 @@ export default function Game(humanBoard) {
         switchPlayer();
     });
 
-    DOM.resetButton.addEventListener('click', () => {
-        // Reset game state
+    // ── RESTART: go back to the ship placement screen ────────────────────────
+    // Remove any old listener first to prevent stacking across game instances
+    const newRestartBtn = DOM.resetButton.cloneNode(true);
+    DOM.resetButton.parentNode.replaceChild(newRestartBtn, DOM.resetButton);
+
+    newRestartBtn.addEventListener('click', () => {
+        // Hide game UI
+        const gameContainer = document.querySelector('.game-container');
+        const controls      = document.querySelector('.controls');
+        const setupContainer = document.querySelector('.setup-container');
+
+        gameContainer.style.display  = 'none';
+        controls.style.display       = 'none';
+
+        // Reset both gameboards
         humanPlayer.gameboard.reset();
         computerPlayer.gameboard.reset();
 
-        gameOver = false;
-        activePlayer = humanPlayer;
+        // Reset AI state so the next game starts clean
+        computerPlayer.aiState    = null;
+        computerPlayer.targetQueue = [];
 
-        // Place ships randomly again
-        placeShipsRandomly(humanPlayer);
-        placeShipsRandomly(computerPlayer);
+        // Re-initialise the setup screen with a fresh board + draggable ships
+        // Read the player name that was set on the board title during setup
+        const boardTitle = document.querySelector('.placement-area .board-container h2');
+        const playerName = boardTitle
+            ? boardTitle.textContent.replace("'s Fleet", '').trim()
+            : 'Player';
 
-        // Re-render the boards
-        DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
-        DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
+        // Clear the placement board so setupShips can rebuild it
+        const placementBoard = document.getElementById('placement-board');
+        placementBoard.innerHTML = '';
+
+        // Reset ship panel items to draggable
+        document.querySelectorAll('.ships-panel .ship').forEach(ship => {
+            ship.draggable = true;
+            ship.dataset.placed = 'false';
+            ship.style.opacity  = '1';
+        });
+
+        // Reset direction dropdown
+        const directionSelect = document.getElementById('ship-direction');
+        if (directionSelect) directionSelect.value = 'horizontal';
+
+        // Show setup screen
+        setupContainer.style.display = 'flex';
+
+        // Re-run setupShips to wire up fresh drag-drop + start button
+        setupShips(playerName);
     });
 
-    // Function to display (popup)
+    // Function to display result popup
     function displayResult(player) {
         DOM.resultPopupWindow.classList.add('active');
         DOM.result.textContent = (player === humanPlayer) ? "You Win!" : "Computer Wins!";
         setTimeout(() => {
             DOM.resultPopupWindow.classList.remove('active');
-            DOM.resetButton.click();   // restart game automatically
+            newRestartBtn.click();   // auto-redirect to setup after 3s
         }, 3000);
     }
 }
