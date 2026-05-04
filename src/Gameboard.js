@@ -8,11 +8,12 @@ function Gameboard() {
             Array(boardSize).fill(null)
         );
     }
-    
+
     this.board = createBoard();
     this.ships = [];
     this.missedAttacks = [];
     this.hitAttacks = [];
+    this.attackedCells = []; // ALL attacked coords (hits + misses) in order
 
     this.placeShip = function (ship, x, y, direction) {
 
@@ -38,6 +39,9 @@ function Gameboard() {
             return "Already attacked";
         }
 
+        // Record in the unified ordered log first
+        this.attackedCells.push([x, y]);
+
         if (this.board[x][y] !== null) {
             this.board[x][y].hit();
             this.hitAttacks.push([x, y]);
@@ -55,16 +59,25 @@ function Gameboard() {
         );
     }
 
+    /**
+     * Returns the Ship object at (x, y), or null if the cell is empty.
+     * Used by ComputerMove to check if a hit ship is sunk.
+     */
+    this.getShipAt = function (x, y) {
+        if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) return null;
+        return this.board[x][y]; // Ship object or null
+    }
+
     this.allShipsSunk = function () {
         return this.ships.every(ship => ship.isSunk());
     }
 
     this.reset = function () {
         this.board = createBoard();
-
         this.ships = [];
         this.missedAttacks = [];
         this.hitAttacks = [];
+        this.attackedCells = [];
     }
 }
 
