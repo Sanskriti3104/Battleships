@@ -588,3 +588,161 @@ button:disabled:hover,
     }
 
 }
+/* ============================================================
+   RESPONSIVE STYLES
+   Append these to the bottom of your existing styles.css
+   Breakpoints:
+     ≤ 1024px  tablet landscape
+     ≤  768px  tablet portrait
+     ≤  540px  large phone
+     ≤  400px  small phone
+   ============================================================ */
+
+/* ── Shared helpers ─────────────────────────────────────────── */
+
+/* Scale the board grid via a custom property so every breakpoint
+   only needs to change one value                                */
+.board {
+    --cell: 36px;
+    grid-template-columns: repeat(10, var(--cell));
+    grid-template-rows:    repeat(10, var(--cell));
+}
+
+.cell {
+    width:  var(--cell, 36px);
+    height: var(--cell, 36px);
+}
+
+/* ── ≤ 1024px  (tablet landscape / small laptop) ────────────── */
+@media (max-width: 1024px) {
+
+    .board { --cell: 32px; gap: 5px; }
+
+    .game-container { gap: 40px; }
+
+    .title h1 { font-size: 56px; }
+}
+
+/* ── ≤ 768px  (tablet portrait) ─────────────────────────────── */
+@media (max-width: 768px) {
+
+    body { padding: 14px; }
+
+    .board { --cell: 28px; gap: 4px; }
+
+    /* Stack the two game boards vertically */
+    .game-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    /* Stack placement area vertically */
+    .placement-area {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .ships-panel {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .title h1 { font-size: 44px; }
+    .title p  { font-size: 13px; }
+
+    /* Description popup full-width on tablet */
+    .description-popup {
+        width: 90vw;
+        max-height: 85vh;
+    }
+
+    #player-form {
+        padding: 30px 28px;
+        min-width: unset;
+        width: 90vw;
+        max-width: 360px;
+    }
+}
+
+/* ── ≤ 540px  (large phone) ─────────────────────────────────── */
+@media (max-width: 540px) {
+
+    body { padding: 10px 8px 80px; } /* bottom pad so waves don't cover content */
+
+    .board { --cell: 26px; gap: 3px; }
+
+    .title h1 { font-size: 36px; }
+    .title p  { font-size: 12px; }
+
+    /* Give each board container horizontal scroll safety */
+    .board-container {
+        padding: 14px;
+        overflow-x: auto;
+    }
+
+    /* Nav bar icons slightly smaller */
+    .nav-bar {
+        font-size: 18px;
+        top: 14px;
+        right: 14px;
+        gap: 14px;
+    }
+
+    /* Ships panel spans full width */
+    .ships-panel {
+        min-width: unset;
+        width: 100%;
+    }
+
+    /* Ship items a bit more compact */
+    .ships-panel .ship {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Restart button */
+    .controls { padding: 8px 0 16px; }
+
+    /* Result popup */
+    .result-popup {
+        padding: 24px 32px;
+    }
+    .result { font-size: 17px; }
+
+    /* Description popup */
+    .description-popup { width: 95vw; }
+    .description-body  { padding: 0 20px 24px; }
+}
+
+/* ── ≤ 400px  (small phone) ─────────────────────────────────── */
+@media (max-width: 400px) {
+
+    .board { --cell: 22px; gap: 3px; }
+
+    .title h1 { font-size: 30px; }
+
+    .board-container h2 { font-size: 13px; }
+
+    /* Home form */
+    #player-form { padding: 24px 18px; }
+    #player-name { font-size: 14px; padding: 11px 12px; }
+
+    /* Tighter ship panel */
+    .ships-panel h2 { font-size: 20px; }
+}
+
+/* ── Landscape phone (short viewport) ───────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .title { margin-bottom: 10px; }
+    .title h1 { font-size: 32px; }
+    .title p  { display: none; }   /* hide subtitle to save vertical space */
+
+    .board { --cell: 24px; gap: 3px; }
+
+    .game-container { gap: 16px; }
+
+    .ocean-bg { height: 100px; }
+}

@@ -6,30 +6,27 @@ import autoPlaceShip from './ShipPlacement.js';
 import setupShips from './setUpShips.js';
 
 export default function Game(humanBoard) {
-    // Ships
+
     const ships = [
-        { name: "Carrier", length: 5 },
+        { name: "Carrier",    length: 5 },
         { name: "Battleship", length: 4 },
-        { name: "Cruiser", length: 3 },
-        { name: "Submarine", length: 3 },
-        { name: "Destroyer", length: 2 }
+        { name: "Cruiser",    length: 3 },
+        { name: "Submarine",  length: 3 },
+        { name: "Destroyer",  length: 2 },
     ];
 
-    // Create players
-    const humanPlayer = new Player('Human');
+    const humanPlayer    = new Player('Human');
+    const computerPlayer = new Player('Computer');
 
     if (humanBoard) {
         humanPlayer.gameboard = humanBoard;
     } else {
         placeShipsRandomly(humanPlayer);
     }
-    
-    const computerPlayer = new Player('Computer');
 
-    // Flag to track if the game is over
-    let gameOver = false;
+    let gameOver     = false;
+    let activePlayer = humanPlayer;
 
-    // Place ships randomly for computer
     function placeShipsRandomly(player) {
         ships.forEach(ship => {
             autoPlaceShip(player.gameboard, new Ship(ship.name, ship.length));
@@ -38,26 +35,20 @@ export default function Game(humanBoard) {
 
     placeShipsRandomly(computerPlayer);
 
-    // Render the boards
-    DOM.renderBoard(humanPlayer.gameboard, DOM.humanBoard, false);
+    DOM.renderBoard(humanPlayer.gameboard,    DOM.humanBoard,    false);
     DOM.renderBoard(computerPlayer.gameboard, DOM.computerBoard, true);
-
-    // Set the active player
-    let activePlayer = humanPlayer;
 
     const switchPlayer = () => {
         activePlayer = activePlayer === humanPlayer ? computerPlayer : humanPlayer;
     };
 
-    // Game loop
+    // ── Game loop ────────────────────────────────────────────────────────────
     DOM.computerBoard.addEventListener('click', (event) => {
-        if (gameOver) return;
-        if (activePlayer !== humanPlayer) return;
+        if (gameOver || activePlayer !== humanPlayer) return;
         if (!event.target.dataset.x) return;
 
         const x = parseInt(event.target.dataset.x);
         const y = parseInt(event.target.dataset.y);
-
         if (isNaN(x) || isNaN(y)) return;
         if (computerPlayer.gameboard.isAlreadyAttacked(x, y)) return;
 
@@ -71,7 +62,6 @@ export default function Game(humanBoard) {
         }
 
         switchPlayer();
-
         if (activePlayer !== computerPlayer) return;
 
         const [cx, cy] = ComputerMove(computerPlayer, humanPlayer);
@@ -87,64 +77,73 @@ export default function Game(humanBoard) {
         switchPlayer();
     });
 
-    // ── RESTART: go back to the ship placement screen ────────────────────────
-    // Remove any old listener first to prevent stacking across game instances
-    const newRestartBtn = DOM.resetButton.cloneNode(true);
-    DOM.resetButton.parentNode.replaceChild(newRestartBtn, DOM.resetButton);
+    // ── Restart — redirect to setup screen ───────────────────────────────────
+    // Clone the button to wipe any listener attached by a previous Game() call
+    const oldBtn    = document.getElementById('restart-btn');
+    const restartBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(restartBtn, oldBtn);
 
-    newRestartBtn.addEventListener('click', () => {
+    restartBtn.addEventListener('click', goToSetup);
+
+    function goToSetup() {
         // Hide game UI
-        const gameContainer = document.querySelector('.game-container');
-        const controls      = document.querySelector('.controls');
-        const setupContainer = document.querySelector('.setup-container');
+        document.querySelector('.game-container').style.display = 'none';
+        document.querySelector('.controls').style.display       = 'none';
 
-        gameContainer.style.display  = 'none';
-        controls.style.display       = 'none';
-
-        // Reset both gameboards
+        // Reset state
         humanPlayer.gameboard.reset();
         computerPlayer.gameboard.reset();
-
-        // Reset AI state so the next game starts clean
-        computerPlayer.aiState    = null;
+        computerPlayer.aiState     = null;
         computerPlayer.targetQueue = [];
+        gameOver     = false;
+        activePlayer = humanPlayer;
 
-        // Re-initialise the setup screen with a fresh board + draggable ships
-        // Read the player name that was set on the board title during setup
+        // Read player name from the board title set during setup
         const boardTitle = document.querySelector('.placement-area .board-container h2');
         const playerName = boardTitle
             ? boardTitle.textContent.replace("'s Fleet", '').trim()
             : 'Player';
 
-        // Clear the placement board so setupShips can rebuild it
-        const placementBoard = document.getElementById('placement-board');
-        placementBoard.innerHTML = '';
+        // ── KEY FIX: replace ship panel HTML with brand-new elements ─────────
+        // The old .ship nodes still have touchstart/dragstart listeners from the
+        // previous setupShips() call. Re-using them causes doubled handlers and
+        // broken drag on the second game. Replacing the innerHTML gives us clean
+        // DOM nodes that setupShips() can attach to without any stale state.
+        const shipsPanel = document.querySelector('.ships-panel');
+        shipsPanel.innerHTML = `
+            <h2>Drag Your Ships</h2>
 
-        // Reset ship panel items to draggable
-        document.querySelectorAll('.ships-panel .ship').forEach(ship => {
-            ship.draggable = true;
-            ship.dataset.placed = 'false';
-            ship.style.opacity  = '1';
-        });
+            <div class="ship" draggable="true" data-length="5">Carrier (5)</div>
+            <div class="ship" draggable="true" data-length="4">Battleship (4)</div>
+            <div class="ship" draggable="true" data-length="3">Cruiser (3)</div>
+            <div class="ship" draggable="true" data-length="3">Submarine (3)</div>
+            <div class="ship" draggable="true" data-length="2">Destroyer (2)</div>
 
-        // Reset direction dropdown
-        const directionSelect = document.getElementById('ship-direction');
-        if (directionSelect) directionSelect.value = 'horizontal';
+            <div class="setup-controls">
+                <label for="ship-direction">Direction:</label>
+                <select id="ship-direction">
+                    <option value="horizontal" selected>Horizontal</option>
+                    <option value="vertical">Vertical</option>
+                </select>
+                <button id="start-game-btn" disabled>Start Game</button>
+            </div>
+        `;
 
-        // Show setup screen
-        setupContainer.style.display = 'flex';
+        // Clear the placement board grid
+        document.getElementById('placement-board').innerHTML = '';
 
-        // Re-run setupShips to wire up fresh drag-drop + start button
+        // Show setup screen and wire it up fresh
+        document.querySelector('.setup-container').style.display = 'flex';
         setupShips(playerName);
-    });
+    }
 
-    // Function to display result popup
+    // ── Result popup ─────────────────────────────────────────────────────────
     function displayResult(player) {
         DOM.resultPopupWindow.classList.add('active');
-        DOM.result.textContent = (player === humanPlayer) ? "You Win!" : "Computer Wins!";
+        DOM.result.textContent = player === humanPlayer ? "You Win!" : "Computer Wins!";
         setTimeout(() => {
             DOM.resultPopupWindow.classList.remove('active');
-            newRestartBtn.click();   // auto-redirect to setup after 3s
+            restartBtn.click();
         }, 3000);
     }
 }
