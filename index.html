@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleships</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- OCEAN BACKGROUND -->
+    <div class="ocean-bg">
+
+        <!-- Wave 1 -->
+        <svg class="wave wave1" viewBox="0 0 1440 200" preserveAspectRatio="none">
+            <path d="
+        M0 100
+        Q90 40 180 100
+        T360 100
+        T540 100
+        T720 100
+        T900 100
+        T1080 100
+        T1260 100
+        T1440 100
+        V200 H0 Z
+        " fill="var(--wave1)" />
+        </svg>
+
+        <!-- Wave 2 -->
+        <svg class="wave wave2" viewBox="0 0 1440 200" preserveAspectRatio="none">
+            <path d="
+        M0 110
+        Q90 60 180 110
+        T360 110
+        T540 110
+        T720 110
+        T900 110
+        T1080 110
+        T1260 110
+        T1440 110
+        V200 H0 Z
+        " fill="var(--wave2)" />
+        </svg>
+
+        <!-- Wave 3 -->
+        <svg class="wave wave3" viewBox="0 0 1440 200" preserveAspectRatio="none">
+            <path d="
+        M0 120
+        Q90 80 180 120
+        T360 120
+        T540 120
+        T720 120
+        T900 120
+        T1080 120
+        T1260 120
+        T1440 120
+        V200 H0 Z
+        " fill="var(--wave3)" />
+        </svg>
+
+    </div>
+    <div class="nav-bar"></div>
+    <div class="popup-window" id="descriptionPopupWindow"></div>
+
+    <div class="title">
+        <h1>Battleship</h1>
+        <p>Strategically locate and sink your opponent's fleet before they destroy yours.</p>
+    </div>
+
+    <div class="home-container">
+
+        <form id="player-form">
+
+            <input type="text" id="player-name" placeholder="Enter Player Name" required>
+            <button type="submit">Play</button>
+
+        </form>
+
+    </div>
+
+    <div class="setup-container">
+
+        <div class="placement-area">
+
+            <div class="ships-panel">
+                <h2>Drag Your Ships</h2>
+
+                <div class="ship" draggable="true" data-length="5">Carrier (5)</div>
+                <div class="ship" draggable="true" data-length="4">Battleship (4)</div>
+                <div class="ship" draggable="true" data-length="3">Cruiser (3)</div>
+                <div class="ship" draggable="true" data-length="3">Submarine (3)</div>
+                <div class="ship" draggable="true" data-length="2">Destroyer (2)</div>
+
+                <div class="setup-controls">
+
+                    <label for="ship-direction">Direction:</label>
+
+                    <select id="ship-direction">
+                        <option value="horizontal" selected>Horizontal</option>
+                        <option value="vertical">Vertical</option>
+                    </select>
+
+                    <button id="start-game-btn">Start Game</button>
+
+                </div>
+
+            </div>
+
+            <div class="board-container">
+                <h2>Your Fleet</h2>
+                <div id="placement-board" class="board"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="game-container">
+
+        <div class="board-container">
+            <h2>Your Fleet</h2>
+            <div id="human-board" class="board"></div>
+        </div>
+
+        <div class="board-container">
+            <h2>Enemy Waters</h2>
+            <div id="computer-board" class="board"></div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button id="restart-btn">Restart Game</button>
+    </div>
+
+    <div class="popup-window" id="resultPopupWindow">
+        <div class="result-popup">
+            <p class="result"></p>
+        </div>
+    </div>
+</body>
+
+</html>
